@@ -4,7 +4,7 @@ const Scholarship = require("../models/scholarship");
 
 // POST /api/match
 router.post("/", async (req, res) => {
-  const { course, gpa, location, incomeStatus, specialCategory } = req.body;
+  const { course, gpa, location} = req.body;
 
   try {
     const results = await Scholarship.find({
@@ -14,7 +14,6 @@ router.post("/", async (req, res) => {
     }).sort({ deadline: 1 }); // soonest deadlines first
 
     // res.json(results);
-    res(console.log("Yay!"));
     res.send({
       scholarships: results,
       message: "Scholarships matched successfully",
