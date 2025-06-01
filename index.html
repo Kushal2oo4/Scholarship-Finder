@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scholarship Finder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Scholarship Finder</h1>
+
+    <form id="profileForm">
+      <input type="text" name="course" placeholder="Course of Study" required />
+      <input type="text" name="gpa" placeholder="GPA / Grades" required />
+      <input type="text" name="location" placeholder="Location" required />
+      <input type="text" name="interests" placeholder="Interests" required />
+      <button type="submit">Find Scholarships</button>
+    </form>
+
+    <div id="scholarshipResults" class="scholarship-list">
+      <!-- Scholarship cards will appear here -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
