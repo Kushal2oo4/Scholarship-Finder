@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ScholarshipSchema = new mongoose.Schema({
   title: String,
@@ -11,4 +11,4 @@ const ScholarshipSchema = new mongoose.Schema({
   link: String,
 });
 
-module.exports = mongoose.model('Scholarship', ScholarshipSchema);
+module.exports = mongoose.model("Scholarship", ScholarshipSchema);
