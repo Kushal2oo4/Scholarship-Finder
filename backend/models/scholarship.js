@@ -9,6 +9,8 @@ const ScholarshipSchema = new mongoose.Schema({
   amount: String,
   deadline: Date,
   link: String,
+  incomeStatus: String,        
+  specialCategory: String      
 });
 
 module.exports = mongoose.model("Scholarship", ScholarshipSchema);

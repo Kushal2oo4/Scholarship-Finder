@@ -8,12 +8,10 @@ headers = {"User-Agent": "Mozilla/5.0"}
 response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.text, 'html.parser')
 
-# Print page title to confirm success
 print("Page title:", soup.title.string)
 
 scholarships = []
 
-# Iterate through each scholarship listing
 for item in soup.select(".scholarship-listing"):
     try:
         title_elem = item.select_one(".scholarship-title")
@@ -28,7 +26,14 @@ for item in soup.select(".scholarship-listing"):
             scholarships.append({
                 "title": title,
                 "link": link,
-                "description": desc
+                "description": desc,
+                "course": "Any",                 # Default value
+                "gpa": 0.0,                      # Default value
+                "location": "Any",               # Default value
+                "amount": "Unknown",             # Placeholder
+                "deadline": None,                # Could be updated later
+                "incomeStatus": "Any",           # Default value
+                "specialCategory": "None"        # Default value
             })
     except Exception as e:
         print("Error parsing an item:", e)

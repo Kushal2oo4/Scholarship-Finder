@@ -34,20 +34,21 @@ function App() {
   };
 
   // 🚀 Handle form submit (filter scholarships)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrorMsg('');
-    try {
-      const res = await axios.post('http://localhost:5000/api/match', formData);
-      setMatchedScholarships(res.data);
-    } catch (error) {
-      console.error('Error matching scholarships:', error);
-      setErrorMsg('Error finding matching scholarships.');
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setErrorMsg('');
+  try {
+    const res = await axios.post('http://localhost:5000/api/match', formData);
+    setMatchedScholarships(res.data.scholarships || []); // ✅ Corrected here
+  } catch (error) {
+    console.error('Error matching scholarships:', error);
+    setErrorMsg('Error finding matching scholarships.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // 🎨 Reusable component
   const ScholarshipList = ({ title, scholarships }) => (
