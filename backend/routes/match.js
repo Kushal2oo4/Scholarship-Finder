@@ -17,14 +17,21 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { course, gpa, location } = req.body;
+    const { course, gpa, location, incomeStatus, specialCategory } = req.body;
+
+    // Flexible query building
+    const query = {};
+
+    if (course && course !== "Any") query.course = course;
+    if (location && location !== "Any") query.location = location;
+    if (gpa) query.gpa = { $lte: parseFloat(gpa) };
+    if (incomeStatus && incomeStatus !== "Any") query.incomeStatus = incomeStatus;
+    if (specialCategory && specialCategory !== "None") query.specialCategory = specialCategory;
+
+    console.log("Query used:", query); // optional debug log
 
     try {
-      const results = await Scholarship.find({
-        course,
-        location,
-        gpa: { $lte: parseFloat(gpa) },
-      }).sort({ deadline: 1 }); // soonest deadlines first
+      const results = await Scholarship.find(query).sort({ deadline: 1 });
 
       if (results.length === 0) {
         return res.status(404).json({ message: "No scholarships found" });
