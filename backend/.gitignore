@@ -1,0 +1,6 @@
+venv/
+env/
+.venv/
+newenv/
+
+node_modules
