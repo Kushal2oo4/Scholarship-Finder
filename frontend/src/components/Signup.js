@@ -42,7 +42,7 @@ const Signup = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Join <span>FindScholarship</span></h2>
+        <h2>Register with us<span> Scholarships</span></h2>
 
         <form onSubmit={handleSignup}>
           <div className="form-group">
