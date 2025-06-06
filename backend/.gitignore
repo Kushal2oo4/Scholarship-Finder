@@ -1,6 +1,3 @@
-venv/
-env/
-.venv/
-newenv/
 
+.env
 node_modules

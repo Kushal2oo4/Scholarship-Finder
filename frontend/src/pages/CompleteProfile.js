@@ -114,7 +114,7 @@ const CompleteProfile = () => {
             placeholder="Enter your exact GPA"
             required
           />
-          <small className="input-hint">e.g., 3.5, 3.75, 4.0</small>
+          <small className="input-hint">Scale of 4.0</small>
         </div>
 
         <div className="form-group">
@@ -128,7 +128,7 @@ const CompleteProfile = () => {
             placeholder="Please enter expected amount"
             required
           />
-          <small className="input-hint">e.g., 3.5, 3.75, 4.0</small>
+          <small className="input-hint"></small>
         </div>
 
         <div className="form-group">
