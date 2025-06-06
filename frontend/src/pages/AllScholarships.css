@@ -1,0 +1,110 @@
+.list-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  background: linear-gradient(135deg, #ffe6f0, #d0f0fd);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+  font-family: 'Poppins', sans-serif;
+}
+
+.list-container h2 {
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  color: #e91e63;
+  text-align: center;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px #ff8fb1;
+}
+
+.scholarship-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.scholarship-item {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(233, 30, 99, 0.15);
+  margin-bottom: 1.8rem;
+  padding: 1.5rem 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scholarship-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(233, 30, 99, 0.3);
+}
+
+.scholarship-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.scholarship-header h3 {
+  font-size: 1.5rem;
+  color: #d81b60;
+  margin: 0;
+  font-weight: 700;
+}
+
+.apply-button {
+  background: linear-gradient(45deg, #ff4081, #f50057);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(245, 0, 87, 0.6);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+  white-space: nowrap;
+}
+
+.apply-button:hover {
+  background: linear-gradient(45deg, #f50057, #ff80ab);
+  box-shadow: 0 6px 18px rgba(255, 64, 129, 0.8);
+}
+
+.scholarship-item p {
+  margin: 0.3rem 0;
+  font-size: 1.05rem;
+  color: #6a1b9a;
+}
+
+.description {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #9c27b0;
+}
+
+.center-text {
+  text-align: center;
+  margin: 4rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ad1457;
+  text-shadow: 1px 1px 3px #f8bbd0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .list-container {
+    padding: 1.2rem 1.5rem;
+    margin: 1rem;
+  }
+
+  .scholarship-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .apply-button {
+    width: 100%;
+    text-align: center;
+  }
+}
