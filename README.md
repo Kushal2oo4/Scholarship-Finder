@@ -40,7 +40,7 @@ Scholarship Finder is a web application designed to help students find scholarsh
    git clone https://github.com/your-username/scholarship-finder.git
    cd scholarship-finder
 
-### .env contend
+### .env content
 PORT=(your port)
 MONGO_URI=(mongo database url)
 JWT_SECRET=(JWT key)
