@@ -6,8 +6,8 @@ const {
   getScholarshipsForStudent
 } = require('../controllers/scholarship.controller');
 
-router.get('/fetch', fetchScholarshipsCom); // For admin or cron usage
-router.get('/all', getAllScholarships); // Public/all users
-router.get('/mysch', getScholarshipsForStudent); // 🔐 Protected
+router.get('/fetch', fetchScholarshipsCom); 
+router.get('/all', getAllScholarships); 
+router.get('/mysch', getScholarshipsForStudent); 
 
 module.exports = router;
