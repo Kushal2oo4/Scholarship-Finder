@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -47,6 +48,13 @@ const userSchema = new mongoose.Schema({
   isProfileComplete: {
     type: Boolean,
     default: false
+  },
+
+  alertDays: {
+    type: Number,
+    default: 7,
+    min: 1,
+    max: 60
   }
 
 }, { timestamps: true });

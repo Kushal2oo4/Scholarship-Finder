@@ -84,8 +84,90 @@ const getScholarshipsForStudent = async (req, res) => {
   }
 };
 
+
+const getUserFromRequest = async (req) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return await User.findById(decoded.id).select('-password');
+  } catch (err) {
+    return null;
+  }
+};
+
+const getAlerts = async (req, res) => {
+  try {
+    const user = await getUserFromRequest(req);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    if (user.gpa == null || user.amount == null) {
+      return res.json({ alertDays: user.alertDays, alerts: [] });
+    }
+
+    const matched = await Scholarship.find({
+      gpa: { $lte: user.gpa },
+      amountValue: { $gte: user.amount },
+    });
+
+    const now = new Date();
+    const limit = new Date();
+    limit.setDate(limit.getDate() + user.alertDays);
+
+    const alerts = matched.filter((s) => {
+      const due = convertDeadlineToDate(s.deadline);
+      return !isNaN(due) && due >= now && due <= limit;
+    });
+
+    alerts.sort((a, b) => {
+      return convertDeadlineToDate(a.deadline) - convertDeadlineToDate(b.deadline);
+    });
+
+    res.json({ alertDays: user.alertDays, alerts });
+  } catch (err) {
+    console.error('Alerts error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const setAlertDays = async (req, res) => {
+  try {
+    const user = await getUserFromRequest(req);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const days = parseInt(req.body.alertDays, 10);
+
+    if (isNaN(days) || days < 1 || days > 60) {
+      return res.status(400).json({
+        message: 'alertDays must be between 1 and 60'
+      });
+    }
+
+    await User.findByIdAndUpdate(user._id, { alertDays: days });
+
+    res.json({ alertDays: days });
+  } catch (err) {
+    console.error('Set alert days error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   fetchScholarshipsCom,
   getAllScholarships,
   getScholarshipsForStudent,
+  getAlerts,
+  setAlertDays,
 };
