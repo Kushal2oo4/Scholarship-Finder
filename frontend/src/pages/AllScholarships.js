@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './AllScholarships.css';
+import useSaved from '../hooks/useSaved';
+import SaveButton from '../components/SaveButton';
 
 const AllScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { isSaved, toggleSave } = useSaved();
 
   useEffect(() => {
     fetch('http://localhost:5000/api/scholarships/all')
@@ -40,6 +43,7 @@ const AllScholarships = () => {
             <p><strong>Deadline:</strong> {sch.deadline || 'N/A'}</p>
             <p><strong>Required GPA:</strong> {sch.gpa ?? 'Any'}</p>
             <p className="description">{sch.description?.slice(0, 200)}...</p>
+            <SaveButton saved={isSaved(sch.url)} onClick={() => toggleSave(sch)} />
           </li>
         ))}
       </ul>

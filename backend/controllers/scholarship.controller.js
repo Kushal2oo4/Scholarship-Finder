@@ -2,6 +2,7 @@ const Scholarship = require('../models/scholarship.model');
 const User = require('../models/user.model');
 const scrapeScholarshipsCom = require('../scrapers/scholarship.scraper');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 // Convert deadline string to Date object
 function convertDeadlineToDate(deadlineStr) {
@@ -110,20 +111,31 @@ const getAlerts = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    if (user.gpa == null || user.amount == null) {
-      return res.json({ alertDays: user.alertDays, alerts: [] });
+    let matched = [];
+
+    if (user.gpa != null && user.amount != null) {
+      matched = await Scholarship.find({
+        gpa: { $lte: user.gpa },
+        amountValue: { $gte: user.amount },
+      });
     }
 
-    const matched = await Scholarship.find({
-      gpa: { $lte: user.gpa },
-      amountValue: { $gte: user.amount },
+    const saved = await Scholarship.find({
+      url: { $in: user.savedScholarships || [] },
     });
+
+    const byId = new Map();
+    matched.concat(saved).forEach((scholarship) => {
+      byId.set(scholarship._id.toString(), scholarship);
+    });
+
+    const combined = Array.from(byId.values());
 
     const now = new Date();
     const limit = new Date();
     limit.setDate(limit.getDate() + user.alertDays);
 
-    const alerts = matched.filter((s) => {
+    const alerts = combined.filter((s) => {
       const due = convertDeadlineToDate(s.deadline);
       return !isNaN(due) && due >= now && due <= limit;
     });
@@ -164,10 +176,95 @@ const setAlertDays = async (req, res) => {
   }
 };
 
+
+const getSaved = async (req, res) => {
+  try {
+    const user = await getUserFromRequest(req);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const saved = await Scholarship.find({
+      url: { $in: user.savedScholarships || [] },
+    });
+
+    saved.sort((a, b) => {
+      return convertDeadlineToDate(a.deadline) - convertDeadlineToDate(b.deadline);
+    });
+
+    res.json(saved);
+  } catch (err) {
+    console.error('Get saved error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const saveScholarship = async (req, res) => {
+  try {
+    const user = await getUserFromRequest(req);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid scholarship id' });
+    }
+
+    const scholarship = await Scholarship.findById(req.params.id);
+
+    if (!scholarship) {
+      return res.status(404).json({ message: 'Scholarship not found' });
+    }
+
+    await User.findByIdAndUpdate(user._id, {
+      $addToSet: { savedScholarships: scholarship.url },
+    });
+
+    res.json({ saved: true });
+  } catch (err) {
+    console.error('Save scholarship error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const unsaveScholarship = async (req, res) => {
+  try {
+    const user = await getUserFromRequest(req);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid scholarship id' });
+    }
+
+    const scholarship = await Scholarship.findById(req.params.id);
+
+    if (!scholarship) {
+      return res.status(404).json({ message: 'Scholarship not found' });
+    }
+
+    await User.findByIdAndUpdate(user._id, {
+      $pull: { savedScholarships: scholarship.url },
+    });
+
+    res.json({ saved: false });
+  } catch (err) {
+    console.error('Unsave scholarship error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   fetchScholarshipsCom,
   getAllScholarships,
   getScholarshipsForStudent,
   getAlerts,
   setAlertDays,
+  getSaved,
+  saveScholarship,
+  unsaveScholarship,
 };

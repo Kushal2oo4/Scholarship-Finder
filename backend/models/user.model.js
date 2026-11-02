@@ -50,6 +50,11 @@ const userSchema = new mongoose.Schema({
     default: false
   },
 
+  savedScholarships: {
+    type: [String],
+    default: []
+  },
+
   alertDays: {
     type: Number,
     default: 7,

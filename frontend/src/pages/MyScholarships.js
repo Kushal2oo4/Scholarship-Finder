@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import AlertsBanner from '../components/AlertsBanner';
+import useSaved from '../hooks/useSaved';
+import SaveButton from '../components/SaveButton';
 import './MyScholarships.css';
 import {
   FaMapMarkerAlt,
@@ -15,6 +17,7 @@ const MyScholarships = () => {
   const { token, loading } = useAuth();
   const [scholarships, setScholarships] = useState([]);
   const [fetching, setFetching] = useState(true);
+  const { isSaved, toggleSave } = useSaved();
 
   useEffect(() => {
     if (loading) return;
@@ -86,6 +89,8 @@ const MyScholarships = () => {
                 <FaMapMarkerAlt /> Location:{' '}
                 <span>{sch.location || 'Flexible'}</span>
               </div>
+
+              <SaveButton saved={isSaved(sch.url)} onClick={() => toggleSave(sch)} />
             </div>
           ))}
         </div>

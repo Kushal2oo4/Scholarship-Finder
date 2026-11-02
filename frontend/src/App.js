@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import AllScholarships from './pages/AllScholarships';
 import ProfilePage from './pages/ProfilePage';
 import MyScholarships from './pages/MyScholarships';
+import SavedScholarships from './pages/SavedScholarships';
 
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
@@ -29,6 +30,7 @@ const PrivateRoutes = () => (
     <Route path="/all" element={<PrivateRoute><AllScholarships /></PrivateRoute>} />
     <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
     <Route path="/mysch" element={<PrivateRoute><MyScholarships /></PrivateRoute>} />
+    <Route path="/saved" element={<PrivateRoute><SavedScholarships /></PrivateRoute>} />
   </>
 );
 

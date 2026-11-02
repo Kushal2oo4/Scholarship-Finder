@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.save-button {
+  margin-top: 0.8rem;
+  padding: 0.45rem 1.1rem;
+  border: 2px solid #e91e63;
+  border-radius: 20px;
+  background: white;
+  color: #e91e63;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background: #e91e63;
+  color: white;
+}
